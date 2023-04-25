@@ -19,6 +19,7 @@ LABEL org.opencontainers.image.authors="Ricardo Arturo Cabral Mejía"
 LABEL org.opencontainers.image.licenses=MIT
 
 WORKDIR /app
+RUN chown -Rh node:node /app
 RUN apk add --no-cache --update git
 
 ADD resources /app/resources
@@ -26,6 +27,8 @@ ADD resources /app/resources
 COPY --from=build /build/dist .
 
 RUN npm install --omit=dev --quiet
+RUN mkdir -p .nostr
+RUN cp resources/settings.yaml .nostr/settings.yaml
 
 USER node:node
 
